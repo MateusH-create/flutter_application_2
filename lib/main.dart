@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -21,7 +22,18 @@ class TelaInicial extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        
-      ),);
+        child:Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Caverna do Dragão',
+            ),
+            Image.asset('imagem/minha_imagem.png.jpg'),
+            ElevatedButton(onPressed: () {}, child: Text('EngineLayer')),
+          ],
+      ),
+    ),
+);
+
   }
 }
