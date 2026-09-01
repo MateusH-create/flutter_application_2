@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'tela_jogo_heroi.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -29,7 +31,14 @@ class TelaInicial extends StatelessWidget {
               'Caverna do Dragão',
             ),
             Image.asset('imagem/minha_imagem.png.jpg'),
-            ElevatedButton(onPressed: () {}, child: Text('EngineLayer')),
+            Image.asset('imagem/Basura.png'),
+            ElevatedButton(onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TelaJogoHeroi()
+                )
+                );
+            }, child: Text('Entrar')),
           ],
       ),
     ),
