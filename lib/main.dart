@@ -30,8 +30,12 @@ class TelaInicial extends StatelessWidget {
             Text(
               'Caverna do Dragão',
             ),
-            Image.asset('imagem/minha_imagem.png.jpg'),
-            Image.asset('imagem/Basura.png'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              Image.asset('imagem/minha_imagem.png.jpg'),
+            Image.asset('imagem/Basura.png', width: 345,),
+            ],),
             ElevatedButton(onPressed: () {
               Navigator.push(
                 context,
