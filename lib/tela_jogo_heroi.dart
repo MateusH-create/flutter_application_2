@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'tela_heroi.dart';
+
 class TelaJogoHeroi extends StatefulWidget{
   const TelaJogoHeroi({super.key});
   @override
@@ -25,8 +27,7 @@ class TelaJogoHeroiState extends State<TelaJogoHeroi> {
               ElevatedButton(onPressed: () => escolherheroi("Wretch"), child: Text("Wretch")),
               ElevatedButton(onPressed: () => escolherheroi("Mago Dos Games"), child: Text("Mago Dos Games")),
               ElevatedButton(onPressed: () => escolherheroi("Cientista"), child: Text("Cientista")),
-
-              Image.network(urlImagem),
+              
 
               Card(
                 elevation: 5, // Dá uma sombra 3D ao cartão
@@ -40,6 +41,15 @@ class TelaJogoHeroiState extends State<TelaJogoHeroi> {
                       Text('❤️ Vida: $vida', style: const TextStyle(fontSize: 18, color: Colors.red)),
                       Text('💰 Moedas: $moedas', style: const TextStyle(fontSize: 18, color: Colors.orange)),
                       Text('⚔️ Poder: $poder', style: const TextStyle(fontSize: 18, color: Colors.blue)),
+                      ElevatedButton(onPressed: () {
+                      Navigator.push(
+                      context,
+                     MaterialPageRoute(builder: (context) => const TelaAmbiente()
+                      )
+                      );
+                      }, child: Text('Escolher')),
+              
+                      Image.network(urlImagem, width: 450,),
                     ],
                   ),
                 ),
@@ -62,7 +72,7 @@ class TelaJogoHeroiState extends State<TelaJogoHeroi> {
        vida = 67;
        moedas = 0;
        poder = 10;
-       urlImagem = 'https://scontent.fbfh2-1.fna.fbcdn.net/v/t39.30808-6/480499567_4096431727267575_7015564186884631824_n.jpg?stp=dst-jpg_tt6&cstp=mx640x663&ctp=p180x540&_nc_cat=101&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=pRHKyIHEU_sQ7kNvwEV37o0&_nc_oc=AdrsNq6WAhvzVY62itfLN789UMaTOlXGGtWhY5x6S0YiC8qW7wjok_-IDwx12MH7KJA&_nc_zt=23&_nc_ht=scontent.fbfh2-1.fna&_nc_gid=w7Kz4YElmSfufE29aMLoGw&_nc_ss=7b289&oh=00_AQL6Y_Bw_AAf2NV5md6nLocaasYRSFiywujce8scqg9NTQ&oe=6AA0B17C';
+       urlImagem = 'https://i.redd.it/s0vp9sq5mti81.jpg';
        }
        else if(tipoHeroi == "Mago Dos Games") {
        nomeHeroi = "Davy Jones";
