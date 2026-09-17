@@ -24,6 +24,21 @@ class TelaAmbiente extends StatefulWidget {
 
 class TelaAmbienteState extends State<TelaAmbiente> {
   int miliss = 200;
+  double posicaoHorizontal = 200;
+  double passo = 30;
+
+  void moverDireita() {
+    setState(() {
+      posicaoHorizontal += passo;
+    });
+  }
+
+  void moverEsquerda() {
+    setState(() {
+      posicaoHorizontal -= passo;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,10 +53,29 @@ class TelaAmbienteState extends State<TelaAmbiente> {
           AnimatedPositioned(
             duration: Duration(milliseconds: miliss),
             curve: Curves.bounceIn,
-            left: 200,
+            left: posicaoHorizontal,
             bottom: 120,
-            height: 130,
             child: Image.network(widget.urlImagem),
+          ),
+
+          Positioned(
+            bottom: 30,
+            left: 20,
+            child: FloatingActionButton(
+              heroTag: 'btnEsquerda',
+              onPressed: moverEsquerda,
+              child: Icon(Icons.arrow_back),
+            ),
+          ),
+
+          Positioned(
+            bottom: 30,
+            right: 20,
+            child: FloatingActionButton(
+              heroTag: 'btnDireita',
+              onPressed: moverDireita,
+              child: Icon(Icons.arrow_forward),
+            ),
           ),
         ],
       ),
