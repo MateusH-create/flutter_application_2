@@ -26,6 +26,11 @@ class TelaAmbienteState extends State<TelaAmbiente> {
   int miliss = 200;
   double posicaoHorizontal = 200;
   double passo = 30;
+  double jump = 100;
+
+  final double chao = 120;
+  late double posicaoVertical = chao;
+  bool pulando = false;
 
   void moverDireita() {
     setState(() {
@@ -39,23 +44,44 @@ class TelaAmbienteState extends State<TelaAmbiente> {
     });
   }
 
+  void pular() async {
+    if (pulando) return;
+    setState(() {
+      pulando = true;
+      posicaoVertical = chao + jump;
+    });
+
+    await Future.delayed(Duration(milliseconds: miliss));
+    if (!mounted) return;
+    setState(() => posicaoVertical = chao);
+
+    await Future.delayed(Duration(milliseconds: miliss));
+    if (!mounted) return;
+    setState(() => pulando = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.network(
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaww8Ys38PRlfTgUjqLHNIVKITta5M-49j8LV_rxfddA&s=10',
-            fit: BoxFit.cover,
+          Positioned.fill(
+            child: Image.network(
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaww8Ys38PRlfTgUjqLHNIVKITta5M-49j8LV_rxfddA&s=10',
+              fit: BoxFit.cover,
+            ),
           ),
 
           AnimatedPositioned(
             duration: Duration(milliseconds: miliss),
             curve: Curves.bounceIn,
             left: posicaoHorizontal,
-            bottom: 120,
-            child: Image.network(widget.urlImagem),
+            bottom: posicaoVertical,
+            child: SizedBox(
+              height: 400,
+              child: Image.network(widget.urlImagem),
+            ),
           ),
 
           Positioned(
@@ -65,6 +91,19 @@ class TelaAmbienteState extends State<TelaAmbiente> {
               heroTag: 'btnEsquerda',
               onPressed: moverEsquerda,
               child: Icon(Icons.arrow_back),
+            ),
+          ),
+
+          Positioned(
+            bottom: 30,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: FloatingActionButton(
+                heroTag: "btnPular",
+                onPressed: pular,
+                child: Icon(Icons.arrow_upward),
+              ),
             ),
           ),
 
