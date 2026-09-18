@@ -83,6 +83,31 @@ class TelaAmbienteState extends State<TelaAmbiente> {
               child: Image.network(widget.urlImagem),
             ),
           ),
+          
+          Positioned(
+            top: 40,
+            left: 16,
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    widget.nomeHeroi,
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    Text('vida: ${widget.vida}',style: const TextStyle(color: Colors.white)),
+                    Text('poder: ${widget.poder}',style: const TextStyle(color: Colors.white)),
+                    Text('moedas: ${widget.moedas}',style: const TextStyle(color: Colors.white)),
+                ],
+              ),
+            ),
+          ),
 
           Positioned(
             bottom: 30,
