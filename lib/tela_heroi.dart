@@ -27,6 +27,9 @@ class TelaAmbienteState extends State<TelaAmbiente> {
   double posicaoHorizontal = 200;
   double passo = 30;
   double jump = 100;
+  bool pocaoColetada = false;
+  double posVerticalPocao = 150;
+  double posHorizontalPocao = 200;
 
   final double chao = 120;
   late double posicaoVertical = chao;
@@ -51,13 +54,27 @@ class TelaAmbienteState extends State<TelaAmbiente> {
       posicaoVertical = chao + jump;
     });
 
-    await Future.delayed(Duration(milliseconds: miliss));
-    if (!mounted) return;
-    setState(() => posicaoVertical = chao);
 
     await Future.delayed(Duration(milliseconds: miliss));
     if (!mounted) return;
+    setState(() => posicaoVertical = chao);
+    checarColisao();
+    await Future.delayed(Duration(milliseconds: miliss));
+    if (!mounted) return;
     setState(() => pulando = false);
+  }
+
+  void checarColisao() {
+    if (pocaoColetada) return;
+
+    bool bateX = (posicaoHorizontal - posHorizontalPocao).abs() < 60;
+    bool bateY = (posicaoVertical - posVerticalPocao).abs() < 60;
+    
+    if (bateX && bateY) {
+      setState(() {
+        pocaoColetada = true;
+      });
+    }
   }
 
   @override
@@ -141,6 +158,14 @@ class TelaAmbienteState extends State<TelaAmbiente> {
               child: Icon(Icons.arrow_forward),
             ),
           ),
+
+          Visibility(visible: !pocaoColetada,
+          child: Positioned(
+            left: posHorizontalPocao,
+            bottom: posVerticalPocao,
+            child: Image.network("https://i0.statig.com.br/bancodeimagens/1u/8s/xp/1u8sxpjgfis267apsjfj76urv.jpg", height: 100,)
+            ),
+          )
         ],
       ),
     );
