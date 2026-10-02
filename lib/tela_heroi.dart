@@ -30,10 +30,17 @@ class TelaAmbienteState extends State<TelaAmbiente> {
   bool pocaoColetada = false;
   double posVerticalPocao = 150;
   double posHorizontalPocao = 200;
-
+  late int _vida;
   final double chao = 120;
   late double posicaoVertical = chao;
   bool pulando = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _vida = widget.vida;
+  }
+
 
   void moverDireita() {
     setState(() {
@@ -73,6 +80,7 @@ class TelaAmbienteState extends State<TelaAmbiente> {
     if (bateX && bateY) {
       setState(() {
         pocaoColetada = true;
+        _vida += 50;
       });
     }
   }
@@ -118,7 +126,7 @@ class TelaAmbienteState extends State<TelaAmbiente> {
                     widget.nomeHeroi,
                     style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                     ),
-                    Text('vida: ${widget.vida}',style: const TextStyle(color: Colors.white)),
+                    Text('vida: $_vida',style: const TextStyle(color: Colors.white)),
                     Text('poder: ${widget.poder}',style: const TextStyle(color: Colors.white)),
                     Text('moedas: ${widget.moedas}',style: const TextStyle(color: Colors.white)),
                 ],
