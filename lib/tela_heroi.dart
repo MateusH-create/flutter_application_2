@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'tela_jogo_heroi.dart';
-
 class TelaAmbiente extends StatefulWidget {
   final String nomeHeroi;
   final String urlImagem;
@@ -28,19 +26,22 @@ class TelaAmbienteState extends State<TelaAmbiente> {
   double passo = 30;
   double jump = 100;
   bool pocaoColetada = false;
-  double posVerticalPocao = 150;
-  double posHorizontalPocao = 200;
   late int _vida;
-  final double chao = 120;
+  final double chao = 50;
   late double posicaoVertical = chao;
   bool pulando = false;
+
+  final double alturaHeroi = 150;
+
+
+  double get posHorizontalPocao => MediaQuery.of(context).size.width * 0.55;
+  double get posVerticalPocao => chao + jump;
 
   @override
   void initState() {
     super.initState();
     _vida = widget.vida;
   }
-
 
   void moverDireita() {
     setState(() {
@@ -61,11 +62,14 @@ class TelaAmbienteState extends State<TelaAmbiente> {
       posicaoVertical = chao + jump;
     });
 
-
     await Future.delayed(Duration(milliseconds: miliss));
     if (!mounted) return;
-    setState(() => posicaoVertical = chao);
+
+ 
     checarColisao();
+
+    // Desce
+    setState(() => posicaoVertical = chao);
     await Future.delayed(Duration(milliseconds: miliss));
     if (!mounted) return;
     setState(() => pulando = false);
@@ -76,7 +80,7 @@ class TelaAmbienteState extends State<TelaAmbiente> {
 
     bool bateX = (posicaoHorizontal - posHorizontalPocao).abs() < 60;
     bool bateY = (posicaoVertical - posVerticalPocao).abs() < 60;
-    
+
     if (bateX && bateY) {
       setState(() {
         pocaoColetada = true;
@@ -85,18 +89,60 @@ class TelaAmbienteState extends State<TelaAmbiente> {
     }
   }
 
+  Widget _imagemHeroi() {
+    if (widget.urlImagem.isEmpty) return const SizedBox();
+
+    if (widget.urlImagem.startsWith('http')) {
+      return Image.network(
+        widget.urlImagem,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stack) =>
+            const Icon(Icons.error, color: Colors.red, size: 50),
+      );
+    }
+
+    return Image.asset(
+      widget.urlImagem,
+      fit: BoxFit.contain,
+      errorBuilder: (context, error, stack) =>
+          const Icon(Icons.error, color: Colors.red, size: 50),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
         children: [
+
           Positioned.fill(
-            child: Image.network(
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaww8Ys38PRlfTgUjqLHNIVKITta5M-49j8LV_rxfddA&s=10',
+            child: Image.asset(
+              'imagem/Juazeiro.png',
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stack) => Container(
+                color: Colors.black,
+                child: Center(
+                  child: Text(
+                    'Erro no fundo: $error',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
             ),
           ),
+
+          if (!pocaoColetada)
+            Positioned(
+              left: posHorizontalPocao,
+              bottom: posVerticalPocao,
+              child: Image.asset(
+                'imagem/Cura.png',
+                height: 80,
+                errorBuilder: (context, error, stack) =>
+                    const Icon(Icons.local_drink, color: Colors.red, size: 60),
+              ),
+            ),
 
           AnimatedPositioned(
             duration: Duration(milliseconds: miliss),
@@ -104,11 +150,11 @@ class TelaAmbienteState extends State<TelaAmbiente> {
             left: posicaoHorizontal,
             bottom: posicaoVertical,
             child: SizedBox(
-              height: 400,
-              child: Image.network(widget.urlImagem),
+              height: alturaHeroi,
+              child: _imagemHeroi(),
             ),
           ),
-          
+
           Positioned(
             top: 40,
             left: 16,
@@ -124,11 +170,23 @@ class TelaAmbienteState extends State<TelaAmbiente> {
                 children: [
                   Text(
                     widget.nomeHeroi,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Text('vida: $_vida',style: const TextStyle(color: Colors.white)),
-                    Text('poder: ${widget.poder}',style: const TextStyle(color: Colors.white)),
-                    Text('moedas: ${widget.moedas}',style: const TextStyle(color: Colors.white)),
+                  ),
+                  Text(
+                    'vida: $_vida',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  Text(
+                    'poder: ${widget.poder}',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  Text(
+                    'moedas: ${widget.moedas}',
+                    style: const TextStyle(color: Colors.white),
+                  ),
                 ],
               ),
             ),
@@ -140,7 +198,7 @@ class TelaAmbienteState extends State<TelaAmbiente> {
             child: FloatingActionButton(
               heroTag: 'btnEsquerda',
               onPressed: moverEsquerda,
-              child: Icon(Icons.arrow_back),
+              child: const Icon(Icons.arrow_back),
             ),
           ),
 
@@ -152,7 +210,7 @@ class TelaAmbienteState extends State<TelaAmbiente> {
               child: FloatingActionButton(
                 heroTag: "btnPular",
                 onPressed: pular,
-                child: Icon(Icons.arrow_upward),
+                child: const Icon(Icons.arrow_upward),
               ),
             ),
           ),
@@ -163,17 +221,9 @@ class TelaAmbienteState extends State<TelaAmbiente> {
             child: FloatingActionButton(
               heroTag: 'btnDireita',
               onPressed: moverDireita,
-              child: Icon(Icons.arrow_forward),
+              child: const Icon(Icons.arrow_forward),
             ),
           ),
-
-          Visibility(visible: !pocaoColetada,
-          child: Positioned(
-            left: posHorizontalPocao,
-            bottom: posVerticalPocao,
-            child: Image.network("https://i0.statig.com.br/bancodeimagens/1u/8s/xp/1u8sxpjgfis267apsjfj76urv.jpg", height: 100,)
-            ),
-          )
         ],
       ),
     );

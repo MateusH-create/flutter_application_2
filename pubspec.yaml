@@ -60,6 +60,11 @@ flutter:
   assets:
   - imagem/minha_imagem.png.jpg
   - imagem/Basura.png
+  - imagem/Davy.png
+  - imagem/Juazeiro.png
+  - imagem/Cura.png
+  - imagem/Albert.png
+  - imagem/Desleichado.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
