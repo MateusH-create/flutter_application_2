@@ -22,20 +22,22 @@ class TelaAmbiente extends StatefulWidget {
 
 class TelaAmbienteState extends State<TelaAmbiente> {
   int miliss = 200;
+  late int _vida;
+
+  final double chao = 50;
+  late double posicaoVertical = chao;
+
+  bool pulando = false;
+  bool pocaoColetada = false;
+
+  final double alturaHeroi = 150;
+  double get posHorizontalPocao => MediaQuery.of(context).size.width * 0.55;
+  double get posVerticalPocao => chao + jump;
+  double inimigoX = -40.0;
+  double inimigoY = 500.0;
   double posicaoHorizontal = 200;
   double passo = 30;
   double jump = 100;
-  bool pocaoColetada = false;
-  late int _vida;
-  final double chao = 50;
-  late double posicaoVertical = chao;
-  bool pulando = false;
-
-  final double alturaHeroi = 150;
-
-
-  double get posHorizontalPocao => MediaQuery.of(context).size.width * 0.55;
-  double get posVerticalPocao => chao + jump;
 
   @override
   void initState() {
@@ -224,6 +226,11 @@ class TelaAmbienteState extends State<TelaAmbiente> {
               child: const Icon(Icons.arrow_forward),
             ),
           ),
+          Positioned(
+            bottom: inimigoX,
+            right: inimigoY,
+            child: Image.asset('imagem/Lula.png', width: 600, height: 600),
+          )
         ],
       ),
     );
